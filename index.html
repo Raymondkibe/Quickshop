@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRISK Hospital – Excellence in Healthcare</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --blue: #1a4fa0;
+    --blue-light: #2563eb;
+    --blue-dark: #0f2d5e;
+    --purple: #6d28d9;
+    --purple-light: #8b5cf6;
+    --black: #111827;
+    --white: #ffffff;
+    --off-white: #f8faff;
+    --gray: #64748b;
+    --gray-light: #e8edf8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--black); overflow-x: hidden; }
+
+  /* ===== TOP BAR ===== */
+  .nav-contact-bar {
+    background: linear-gradient(90deg, var(--blue-dark), var(--purple));
+    color: white; font-size: 0.8rem;
+    padding: 6px 5%;
+    display: flex; justify-content: flex-end; gap: 24px;
+    align-items: center;
+  }
+  .nav-contact-bar a { color: white; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+  .nav-contact-bar a:hover { opacity: 0.85; }
+
+  /* ===== NAVBAR ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(26,79,160,0.12);
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 24px rgba(26,79,160,0.12); }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px; text-decoration: none;
+  }
+  .nav-logo .logo-icon {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 20px; font-weight: 900; font-family: 'Playfair Display', serif;
+  }
+  .nav-logo .logo-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--blue-dark); }
+  .nav-logo .logo-text span { color: var(--purple); }
+
+  .nav-links {
+    display: flex; gap: 32px; list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none; color: var(--black); font-size: 0.9rem; font-weight: 500;
+    transition: color 0.2s; position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--purple)); transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--blue); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    color: white !important; padding: 10px 22px; border-radius: 50px;
+    font-weight: 600 !important; transition: transform 0.2s, box-shadow 0.2s !important;
+  }
+  .nav-cta::after { display: none !important; }
+  .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(109,40,217,0.3); }
+
+  /* ===== BURGER MENU ===== */
+  .burger-btn {
+    display: none;
+    flex-direction: column; justify-content: center; align-items: center;
+    width: 44px; height: 44px;
+    background: none; border: 2px solid var(--gray-light);
+    border-radius: 10px; cursor: pointer; gap: 5px;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative; z-index: 1100;
+  }
+  .burger-btn:hover { border-color: var(--blue); background: var(--off-white); }
+  .burger-btn span {
+    display: block; width: 20px; height: 2px;
+    background: var(--blue-dark); border-radius: 2px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+  }
+  .burger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .burger-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .burger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Mobile Nav Drawer */
+  .mobile-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 1050;
+    pointer-events: none;
+  }
+  .mobile-nav-overlay {
+    position: absolute; inset: 0;
+    background: rgba(15,45,94,0.55);
+    backdrop-filter: blur(4px);
+    opacity: 0; transition: opacity 0.35s;
+  }
+  .mobile-nav-drawer {
+    position: absolute; top: 0; right: 0;
+    width: min(320px, 88vw); height: 100%;
+    background: white;
+    transform: translateX(100%);
+    transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex; flex-direction: column;
+    box-shadow: -8px 0 48px rgba(15,45,94,0.18);
+    overflow-y: auto;
+  }
+  .mobile-nav.open { pointer-events: all; }
+  .mobile-nav.open .mobile-nav-overlay { opacity: 1; }
+  .mobile-nav.open .mobile-nav-drawer { transform: translateX(0); }
+
+  .mobile-nav-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--gray-light);
+    background: linear-gradient(135deg, var(--blue-dark), var(--purple));
+  }
+  .mobile-nav-header .logo-text { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; color: white; }
+  .mobile-nav-header .logo-text span { color: #93c5fd; }
+  .mobile-nav-close {
+    width: 36px; height: 36px; background: rgba(255,255,255,0.15);
+    border: none; border-radius: 8px; cursor: pointer; color: white;
+    font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+  }
+  .mobile-nav-links {
+    padding: 16px 0; list-style: none; flex: 1;
+  }
+  .mobile-nav-links li a {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px; text-decoration: none;
+    color: var(--black); font-size: 0.95rem; font-weight: 500;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .mobile-nav-links li a i {
+    width: 20px; text-align: center;
+    color: var(--blue); font-size: 0.95rem;
+  }
+  .mobile-nav-links li a:hover {
+    background: var(--off-white); color: var(--blue);
+    border-left-color: var(--blue);
+  }
+  .mobile-nav-links li a.nav-cta-mobile {
+    margin: 8px 16px; border-radius: 10px; border-left: none;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    color: white; justify-content: center; font-weight: 700;
+    padding: 14px 24px;
+  }
+  .mobile-nav-links li a.nav-cta-mobile i { color: white; }
+  .mobile-nav-links li a.nav-cta-mobile:hover { opacity: 0.9; background: linear-gradient(135deg, var(--blue), var(--purple)); }
+  .mobile-nav-contacts {
+    padding: 20px 24px; border-top: 1px solid var(--gray-light);
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .mobile-nav-contacts a {
+    display: flex; align-items: center; gap: 10px;
+    color: var(--gray); font-size: 0.85rem; text-decoration: none;
+  }
+  .mobile-nav-contacts a i { color: var(--blue); width: 16px; text-align: center; }
+  .mobile-nav-contacts a:hover { color: var(--blue); }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative; height: 100vh; min-height: 620px;
+    overflow: hidden; margin-top: 0;
+  }
+  .hero-slide {
+    position: absolute; inset: 0; opacity: 0;
+    transition: opacity 1.2s ease; display: flex; align-items: center;
+  }
+  .hero-slide.active { opacity: 1; z-index: 2; }
+  .hero-slide.prev { opacity: 0; z-index: 1; }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    transform: scale(1.05); transition: transform 9s ease;
+  }
+  .hero-slide.active .hero-bg { transform: scale(1); }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(105deg, rgba(10,30,80,0.82) 0%, rgba(109,40,217,0.45) 60%, transparent 100%);
+  }
+  .hero-content {
+    position: relative; z-index: 3;
+    padding: 0 8%; max-width: 680px; padding-top: 70px;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.15); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white; font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 6px 16px; border-radius: 50px; margin-bottom: 20px;
+  }
+  .hero-badge i { color: #fbbf24; }
+  .hero-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900; color: white; line-height: 1.15; margin-bottom: 18px;
+  }
+  .hero-content h1 .accent { color: #93c5fd; }
+  .hero-content p { color: rgba(255,255,255,0.85); font-size: 1.05rem; line-height: 1.7; margin-bottom: 32px; max-width: 500px; }
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--blue-light), var(--purple));
+    color: white; padding: 14px 30px; border-radius: 50px;
+    font-weight: 600; font-size: 0.95rem; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 6px 24px rgba(37,99,235,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(109,40,217,0.4); }
+  .btn-outline {
+    background: rgba(255,255,255,0.12); backdrop-filter: blur(8px);
+    color: white; padding: 14px 30px; border-radius: 50px;
+    font-weight: 600; font-size: 0.95rem; text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.35);
+    display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.22); }
+
+  .hero-indicators {
+    position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+    z-index: 5; display: flex; gap: 10px;
+  }
+  .hero-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(255,255,255,0.4); cursor: pointer; transition: all 0.3s;
+    border: 2px solid transparent;
+  }
+  .hero-dot.active { background: white; width: 28px; border-radius: 5px; }
+  .hero-progress {
+    position: absolute; bottom: 0; left: 0; height: 3px;
+    background: linear-gradient(90deg, var(--blue-light), var(--purple));
+    z-index: 5; animation: progress 9s linear infinite;
+  }
+  @keyframes progress { from { width: 0; } to { width: 100%; } }
+
+  /* ===== STATS STRIP ===== */
+  .stats-strip {
+    background: linear-gradient(135deg, var(--blue-dark), var(--purple));
+    padding: 32px 5%;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  }
+  .stat-item { text-align: center; padding: 20px; border-right: 1px solid rgba(255,255,255,0.15); }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; color: white; }
+  .stat-label { color: rgba(255,255,255,0.75); font-size: 0.85rem; margin-top: 4px; }
+
+  /* ===== SECTION COMMONS ===== */
+  section { padding: 80px 5%; }
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--purple); font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px;
+  }
+  .section-tag::before { content: ''; width: 28px; height: 2px; background: linear-gradient(90deg, var(--blue), var(--purple)); }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 900; color: var(--blue-dark); line-height: 1.25; }
+  .section-title span { color: var(--purple); }
+  .section-sub { color: var(--gray); font-size: 1rem; line-height: 1.7; max-width: 560px; margin-top: 12px; }
+
+  /* ===== SERVICES ===== */
+  .services { background: var(--off-white); }
+  .services-header { text-align: center; margin-bottom: 52px; }
+  .services-header .section-sub { margin: 12px auto 0; }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+  .service-card {
+    background: white; border-radius: 20px; padding: 36px 28px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid var(--gray-light); position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--blue), var(--purple));
+    transform: scaleX(0); transition: transform 0.3s; transform-origin: left;
+  }
+  .service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(26,79,160,0.12); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-icon {
+    width: 58px; height: 58px;
+    background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(109,40,217,0.1));
+    border-radius: 16px; display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; color: var(--blue); margin-bottom: 18px;
+  }
+  .service-card h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--blue-dark); margin-bottom: 10px; }
+  .service-card p { color: var(--gray); font-size: 0.9rem; line-height: 1.65; }
+
+  /* ===== ABOUT ===== */
+  .about { background: white; }
+  .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .about-image-stack { position: relative; }
+  .about-img-main {
+    width: 100%; height: 440px;
+    background: url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=700&q=80') center/cover;
+    border-radius: 24px; box-shadow: 0 24px 64px rgba(26,79,160,0.18);
+  }
+  .about-img-accent {
+    position: absolute; bottom: -28px; right: -28px;
+    width: 180px; height: 180px;
+    background: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&q=80') center/cover;
+    border-radius: 18px; border: 5px solid white; box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+  }
+  .about-badge-floating {
+    position: absolute; top: 28px; left: -24px;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    color: white; padding: 14px 20px; border-radius: 16px;
+    font-weight: 700; font-size: 0.85rem; text-align: center;
+    box-shadow: 0 8px 24px rgba(109,40,217,0.35);
+  }
+  .about-badge-floating .big { font-size: 1.6rem; display: block; font-family: 'Playfair Display', serif; }
+  .about-content { padding-right: 20px; }
+  .about-content .section-sub { margin-bottom: 28px; }
+
+  .skill-bars { margin: 28px 0; }
+  .skill-bar { margin-bottom: 20px; }
+  .skill-bar-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .skill-bar-label { font-weight: 600; font-size: 0.9rem; color: var(--blue-dark); }
+  .skill-bar-pct { font-weight: 700; font-size: 0.85rem; color: var(--purple); }
+  .skill-bar-track { height: 8px; background: var(--gray-light); border-radius: 4px; overflow: hidden; }
+  .skill-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--blue), var(--purple)); width: 0; transition: width 1.5s ease; }
+
+  .about-features { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 28px; }
+  .about-feat { display: flex; align-items: center; gap: 10px; background: var(--off-white); padding: 12px 16px; border-radius: 10px; }
+  .about-feat i { color: var(--blue); font-size: 1rem; }
+  .about-feat span { font-size: 0.85rem; font-weight: 500; color: var(--blue-dark); }
+
+  /* ===== GALLERY ===== */
+  .gallery { background: var(--off-white); overflow: hidden; }
+  .gallery-header { text-align: center; margin-bottom: 48px; }
+  .gallery-header .section-sub { margin: 12px auto 0; }
+  .gallery-track-wrap { position: relative; overflow: hidden; }
+  .gallery-track { display: flex; gap: 24px; animation: slideLeft 30s linear infinite; width: max-content; }
+  .gallery-track:hover { animation-play-state: paused; }
+  @keyframes slideLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .gallery-card { width: 320px; flex-shrink: 0; border-radius: 20px; overflow: hidden; position: relative; cursor: pointer; box-shadow: 0 8px 28px rgba(26,79,160,0.1); transition: transform 0.3s, box-shadow 0.3s; }
+  .gallery-card:hover { transform: scale(1.03); box-shadow: 0 16px 40px rgba(26,79,160,0.18); }
+  .gallery-img { width: 100%; height: 200px; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; }
+  .gallery-play { width: 54px; height: 54px; background: rgba(255,255,255,0.92); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--purple); box-shadow: 0 4px 16px rgba(0,0,0,0.2); transition: transform 0.2s; }
+  .gallery-card:hover .gallery-play { transform: scale(1.12); }
+  .gallery-info { background: white; padding: 18px 20px; }
+  .gallery-info h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--blue-dark); margin-bottom: 6px; }
+  .gallery-info p { font-size: 0.82rem; color: var(--gray); }
+  .gallery-tag { display: inline-block; background: linear-gradient(90deg, var(--blue), var(--purple)); color: white; font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 50px; margin-bottom: 6px; }
+
+  /* ===== DOCTORS ===== */
+  .doctors { background: white; }
+  .doctors-header { text-align: center; margin-bottom: 52px; }
+  .doctors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px; }
+  .doctor-card { border-radius: 20px; overflow: hidden; border: 1px solid var(--gray-light); transition: transform 0.3s, box-shadow 0.3s; background: white; }
+  .doctor-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(26,79,160,0.12); }
+  .doctor-img { height: 240px; background-size: cover; background-position: center top; position: relative; }
+  .doctor-dept { position: absolute; bottom: 12px; left: 12px; background: linear-gradient(90deg, var(--blue), var(--purple)); color: white; font-size: 0.72rem; font-weight: 700; padding: 4px 12px; border-radius: 50px; }
+  .doctor-info { padding: 20px; }
+  .doctor-info h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--blue-dark); }
+  .doctor-info p { font-size: 0.82rem; color: var(--gray); margin: 4px 0 12px; }
+  .doctor-socials { display: flex; gap: 10px; }
+  .doctor-socials a { width: 32px; height: 32px; background: var(--off-white); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--blue); font-size: 0.8rem; text-decoration: none; transition: background 0.2s, color 0.2s; }
+  .doctor-socials a:hover { background: var(--blue); color: white; }
+
+  /* ===== APPOINTMENT ===== */
+  .appointment { background: linear-gradient(135deg, var(--blue-dark) 0%, var(--purple) 100%); padding: 80px 5%; }
+  .appt-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .appt-content h2 { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; color: white; line-height: 1.2; margin-bottom: 16px; }
+  .appt-content p { color: rgba(255,255,255,0.8); line-height: 1.7; margin-bottom: 28px; }
+  .appt-contacts { display: flex; flex-direction: column; gap: 16px; }
+  .appt-contact { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); padding: 16px 20px; border-radius: 14px; text-decoration: none; transition: background 0.2s; }
+  .appt-contact:hover { background: rgba(255,255,255,0.18); }
+  .appt-contact i { font-size: 1.3rem; color: #93c5fd; width: 24px; text-align: center; }
+  .appt-contact-info .label { font-size: 0.75rem; color: rgba(255,255,255,0.65); }
+  .appt-contact-info .value { color: white; font-weight: 600; font-size: 0.95rem; }
+  .appt-form { background: white; border-radius: 24px; padding: 40px; box-shadow: 0 24px 64px rgba(0,0,0,0.15); }
+  .appt-form h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--blue-dark); margin-bottom: 24px; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--gray); margin-bottom: 6px; }
+  .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border: 1px solid var(--gray-light); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--black); outline: none; transition: border 0.2s; background: var(--off-white); }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--blue); background: white; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-submit { width: 100%; padding: 14px; border-radius: 10px; background: linear-gradient(135deg, var(--blue), var(--purple)); color: white; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700; border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+  .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(109,40,217,0.35); }
+
+  /* ===== MAP ===== */
+  .location-section { background: var(--off-white); padding: 80px 5%; }
+  .location-inner { display: grid; grid-template-columns: 1fr 1.6fr; gap: 40px; align-items: start; }
+  .loc-detail { display: flex; gap: 14px; margin-bottom: 20px; padding: 18px; background: white; border-radius: 14px; border: 1px solid var(--gray-light); }
+  .loc-icon { width: 44px; height: 44px; flex-shrink: 0; background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(109,40,217,0.1)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--blue); font-size: 1rem; }
+  .loc-text .l-label { font-size: 0.75rem; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; }
+  .loc-text .l-val { font-weight: 600; color: var(--blue-dark); font-size: 0.92rem; margin-top: 2px; }
+  .map-container { border-radius: 24px; overflow: hidden; box-shadow: 0 16px 48px rgba(26,79,160,0.14); height: 440px; }
+  .map-container iframe { width: 100%; height: 100%; border: none; }
+
+  /* ===== TESTIMONIALS ===== */
+  .testimonials { background: white; }
+  .testimonials-header { text-align: center; margin-bottom: 52px; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .testimonial-card { background: var(--off-white); border-radius: 20px; padding: 32px; border: 1px solid var(--gray-light); position: relative; transition: transform 0.3s, box-shadow 0.3s; }
+  .testimonial-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(26,79,160,0.1); }
+  .testimonial-card .quote-icon { font-size: 2.5rem; color: var(--blue); opacity: 0.15; position: absolute; top: 20px; right: 24px; font-family: 'Playfair Display', serif; line-height: 1; }
+  .stars { color: #f59e0b; font-size: 0.85rem; margin-bottom: 12px; }
+  .testimonial-card p { color: var(--gray); font-size: 0.92rem; line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+  .t-author { display: flex; align-items: center; gap: 12px; }
+  .t-avatar { width: 44px; height: 44px; border-radius: 50%; background-size: cover; background-position: center; border: 2px solid var(--blue); }
+  .t-name { font-weight: 700; font-size: 0.9rem; color: var(--blue-dark); }
+  .t-role { font-size: 0.78rem; color: var(--gray); }
+
+  /* ===== WHY CHOOSE US ===== */
+  .why { background: var(--off-white); }
+  .why-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .why-img { height: 480px; background: url('https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=700&q=80') center/cover; border-radius: 24px; box-shadow: 0 24px 64px rgba(26,79,160,0.18); position: relative; }
+  .why-img::after { content: ''; position: absolute; inset: 0; border-radius: 24px; background: linear-gradient(to top, rgba(10,30,80,0.4), transparent 60%); }
+  .why-label { position: absolute; bottom: 28px; left: 28px; z-index: 2; background: white; border-radius: 14px; padding: 16px 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+  .why-label .big { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: var(--blue); display: block; }
+  .why-label small { color: var(--gray); font-size: 0.78rem; }
+  .why-features { display: flex; flex-direction: column; gap: 20px; margin-top: 28px; }
+  .why-feat { display: flex; gap: 16px; align-items: flex-start; background: white; padding: 20px 24px; border-radius: 16px; border: 1px solid var(--gray-light); transition: transform 0.2s; }
+  .why-feat:hover { transform: translateX(6px); }
+  .why-feat-icon { width: 48px; height: 48px; flex-shrink: 0; background: linear-gradient(135deg, var(--blue), var(--purple)); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1rem; }
+  .why-feat h4 { font-weight: 700; color: var(--blue-dark); font-size: 0.95rem; margin-bottom: 4px; }
+  .why-feat p { font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
+
+  /* ===== HEALTH TIPS SECTION (NEW) ===== */
+  .health-tips { background: white; }
+  .health-tips-header { text-align: center; margin-bottom: 48px; }
+  .health-tips-header .section-sub { margin: 12px auto 0; }
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .tip-card {
+    border-radius: 20px; overflow: hidden;
+    border: 1px solid var(--gray-light);
+    transition: transform 0.3s, box-shadow 0.3s;
+    background: white;
+  }
+  .tip-card:hover { transform: translateY(-5px); box-shadow: 0 18px 44px rgba(26,79,160,0.12); }
+  .tip-card-img {
+    height: 180px; background-size: cover; background-position: center;
+    position: relative;
+  }
+  .tip-card-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(15,45,94,0.5), transparent 60%); }
+  .tip-category {
+    position: absolute; top: 14px; left: 14px; z-index: 2;
+    background: rgba(255,255,255,0.92); color: var(--blue);
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 50px;
+  }
+  .tip-card-body { padding: 22px; }
+  .tip-card-body h4 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--blue-dark); margin-bottom: 8px; }
+  .tip-card-body p { font-size: 0.87rem; color: var(--gray); line-height: 1.65; margin-bottom: 14px; }
+  .tip-read-more { color: var(--blue); font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: gap 0.2s; }
+  .tip-read-more:hover { gap: 10px; }
+
+  /* ===== INSURANCE SECTION (NEW) ===== */
+  .insurance-section { background: var(--off-white); padding: 80px 5%; }
+  .insurance-inner { max-width: 1000px; margin: 0 auto; text-align: center; }
+  .insurance-inner .section-sub { margin: 12px auto 32px; }
+  .insurance-logos {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 16px;
+    margin-top: 40px;
+  }
+  .insurance-badge {
+    display: flex; align-items: center; gap: 10px;
+    background: white; border: 1px solid var(--gray-light);
+    padding: 14px 22px; border-radius: 14px;
+    font-weight: 600; font-size: 0.88rem; color: var(--blue-dark);
+    box-shadow: 0 4px 16px rgba(26,79,160,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .insurance-badge:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(26,79,160,0.12); }
+  .insurance-badge i { color: var(--blue); font-size: 1.1rem; }
+  .insurance-note {
+    margin-top: 32px; padding: 20px 28px;
+    background: linear-gradient(135deg, rgba(37,99,235,0.07), rgba(109,40,217,0.07));
+    border-radius: 14px; border: 1px solid rgba(37,99,235,0.12);
+    color: var(--gray); font-size: 0.9rem; line-height: 1.7;
+  }
+  .insurance-note strong { color: var(--blue-dark); }
+
+  /* ===== LIVE WAIT TIME BANNER (NEW) ===== */
+  .wait-banner {
+    background: linear-gradient(90deg, var(--blue-dark), #1e3a8a);
+    padding: 18px 5%;
+    display: flex; align-items: center; justify-content: center;
+    gap: 40px; flex-wrap: wrap;
+  }
+  .wait-item {
+    display: flex; align-items: center; gap: 12px; color: white;
+  }
+  .wait-indicator {
+    width: 10px; height: 10px; border-radius: 50%;
+    animation: blink 1.4s infinite;
+  }
+  .wait-indicator.green { background: #22c55e; }
+  .wait-indicator.yellow { background: #f59e0b; }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .wait-item .dept { font-size: 0.8rem; color: rgba(255,255,255,0.65); }
+  .wait-item .time { font-weight: 700; font-size: 1.05rem; }
+  .wait-banner-label { font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; text-transform: uppercase; margin-right: 8px; }
+
+  /* ===== FOOTER ===== */
+  footer { background: var(--blue-dark); color: rgba(255,255,255,0.8); }
+  .footer-main { padding: 64px 5%; display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 48px; }
+  .footer-brand .f-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+  .f-logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--blue-light), var(--purple)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.1rem; }
+  .f-logo-text { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; color: white; }
+  .f-logo-text span { color: #93c5fd; }
+  .footer-brand p { font-size: 0.87rem; line-height: 1.7; color: rgba(255,255,255,0.65); margin-bottom: 24px; }
+  .footer-socials { display: flex; gap: 10px; }
+  .footer-socials a { width: 36px; height: 36px; background: rgba(255,255,255,0.08); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; transition: background 0.2s, color 0.2s; }
+  .footer-socials a:hover { background: var(--blue-light); color: white; }
+  .footer-col h4 { color: white; font-weight: 700; font-size: 0.95rem; margin-bottom: 20px; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col ul a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 0.87rem; transition: color 0.2s; display: flex; align-items: center; gap: 6px; }
+  .footer-col ul a::before { content: '›'; color: var(--purple-light); }
+  .footer-col ul a:hover { color: white; }
+  .footer-contact-item { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+  .footer-contact-item i { color: var(--blue-light); font-size: 0.95rem; margin-top: 2px; width: 18px; }
+  .footer-contact-item span { font-size: 0.85rem; color: rgba(255,255,255,0.7); line-height: 1.5; }
+  .footer-contact-item a { color: rgba(255,255,255,0.7); text-decoration: none; }
+  .footer-contact-item a:hover { color: white; }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; color: rgba(255,255,255,0.5); }
+
+  /* ===== EMERGENCY BADGE ===== */
+  .emergency-badge {
+    position: fixed; bottom: 88px; right: 20px; z-index: 999;
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    color: white; padding: 12px 18px; border-radius: 50px;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 8px 28px rgba(220,38,38,0.4);
+    text-decoration: none; font-weight: 700; font-size: 0.85rem;
+    animation: pulse-red 2s infinite;
+  }
+  @keyframes pulse-red { 0%,100% { box-shadow: 0 8px 28px rgba(220,38,38,0.4); } 50% { box-shadow: 0 8px 40px rgba(220,38,38,0.65); } }
+  .emergency-badge i { font-size: 1rem; animation: ring 1.5s infinite; }
+  @keyframes ring { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+
+  /* ===== WHATSAPP FLOAT (NEW) ===== */
+  .whatsapp-float {
+    position: fixed; bottom: 28px; right: 20px; z-index: 999;
+    width: 52px; height: 52px;
+    background: #25D366;
+    color: white; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; text-decoration: none;
+    box-shadow: 0 6px 24px rgba(37,211,102,0.45);
+    animation: wa-pulse 2.5s infinite;
+    transition: transform 0.2s;
+  }
+  .whatsapp-float:hover { transform: scale(1.1); }
+  @keyframes wa-pulse { 0%,100% { box-shadow: 0 6px 24px rgba(37,211,102,0.45); } 50% { box-shadow: 0 6px 36px rgba(37,211,102,0.7); } }
+
+  /* ===== SCROLL TOP ===== */
+  #scrollTop {
+    position: fixed; bottom: 28px; left: 20px; z-index: 999;
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    color: white; border: none; border-radius: 50%; cursor: pointer;
+    font-size: 1rem; display: none; align-items: center; justify-content: center;
+    box-shadow: 0 6px 20px rgba(26,79,160,0.3); transition: transform 0.2s;
+  }
+  #scrollTop:hover { transform: translateY(-3px); }
+  #scrollTop.show { display: flex; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .about-inner, .appt-inner, .why-inner, .location-inner, .footer-main { grid-template-columns: 1fr; }
+    .stats-strip { grid-template-columns: repeat(2,1fr); }
+    .nav-links { display: none; }
+    .burger-btn { display: flex; }
+    .about-img-accent, .about-badge-floating { display: none; }
+    .why-img { height: 280px; }
+    .footer-main { grid-template-columns: 1fr 1fr; }
+    .nav-contact-bar { justify-content: center; gap: 14px; font-size: 0.75rem; }
+    .wait-banner { gap: 18px; padding: 14px 5%; }
+  }
+  @media (max-width: 580px) {
+    .stats-strip { grid-template-columns: repeat(2,1fr); }
+    .footer-main { grid-template-columns: 1fr; }
+    .about-features { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    .hero-content { padding: 0 6%; padding-top: 70px; }
+    .hero-content h1 { font-size: 1.9rem; }
+    .nav-contact-bar { display: none; }
+    .insurance-logos { gap: 10px; }
+    .insurance-badge { padding: 10px 14px; font-size: 0.82rem; }
+    .wait-banner { flex-direction: column; gap: 14px; }
+    .emergency-badge { font-size: 0.78rem; padding: 10px 14px; right: 16px; bottom: 92px; }
+    .whatsapp-float { right: 16px; bottom: 24px; }
+    #scrollTop { left: 16px; bottom: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="nav-contact-bar">
+  <a href="mailto:techray91@gmail.com"><i class="fas fa-envelope"></i> techray91@gmail.com</a>
+  <a href="https://wa.me/254712883849" target="_blank"><i class="fab fa-whatsapp"></i> +254 712 883 849</a>
+  <a href="tel:+254712883849"><i class="fas fa-phone"></i> Call Us Now</a>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="logo-icon">B</div>
+    <div class="logo-text">BRISK <span>Hospital</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#doctors">Doctors</a></li>
+    <li><a href="#gallery">Media</a></li>
+    <li><a href="#location">Location</a></li>
+    <li><a href="#contact" class="nav-cta">Book Appointment</a></li>
+  </ul>
+  <!-- BURGER BUTTON -->
+  <button class="burger-btn" id="burgerBtn" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV DRAWER -->
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <div class="mobile-nav-overlay" id="mobileOverlay"></div>
+  <div class="mobile-nav-drawer" role="dialog" aria-label="Navigation menu">
+    <div class="mobile-nav-header">
+      <div class="logo-text">BRISK <span>Hospital</span></div>
+      <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu"><i class="fas fa-times"></i></button>
+    </div>
+    <ul class="mobile-nav-links">
+      <li><a href="#home" class="mobile-link"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="#services" class="mobile-link"><i class="fas fa-stethoscope"></i> Services</a></li>
+      <li><a href="#about" class="mobile-link"><i class="fas fa-hospital"></i> About Us</a></li>
+      <li><a href="#doctors" class="mobile-link"><i class="fas fa-user-md"></i> Our Doctors</a></li>
+      <li><a href="#gallery" class="mobile-link"><i class="fas fa-photo-video"></i> Media</a></li>
+      <li><a href="#health-tips" class="mobile-link"><i class="fas fa-heart"></i> Health Tips</a></li>
+      <li><a href="#insurance" class="mobile-link"><i class="fas fa-shield-alt"></i> Insurance</a></li>
+      <li><a href="#location" class="mobile-link"><i class="fas fa-map-marker-alt"></i> Location</a></li>
+      <li><a href="#contact" class="nav-cta-mobile mobile-link"><i class="fas fa-calendar-check"></i> Book Appointment</a></li>
+    </ul>
+    <div class="mobile-nav-contacts">
+      <a href="tel:+254712883849"><i class="fas fa-phone"></i> +254 712 883 849</a>
+      <a href="https://wa.me/254712883849" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+      <a href="mailto:techray91@gmail.com"><i class="fas fa-envelope"></i> techray91@gmail.com</a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home" style="padding-top:70px">
+  <div id="heroSlides">
+    <div class="hero-slide active">
+      <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1600&q=80')"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-badge"><i class="fas fa-star"></i> Kenya's Premier Healthcare</div>
+        <h1>Your Health, Our <span class="accent">Sacred Commitment</span></h1>
+        <p>At BRISK Hospital, we combine world-class medical expertise with compassionate care to deliver exceptional healthcare outcomes for every patient.</p>
+        <div class="hero-btns">
+          <a href="#contact" class="btn-primary"><i class="fas fa-calendar-check"></i> Book Appointment</a>
+          <a href="#services" class="btn-outline"><i class="fas fa-play-circle"></i> Our Services</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-slide">
+      <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=1600&q=80')"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-badge"><i class="fas fa-microscope"></i> Advanced Diagnostics</div>
+        <h1>Cutting-Edge <span class="accent">Medical Technology</span></h1>
+        <p>From MRI scans to robotic surgery, BRISK Hospital is equipped with state-of-the-art technology to diagnose and treat with precision.</p>
+        <div class="hero-btns">
+          <a href="#services" class="btn-primary"><i class="fas fa-stethoscope"></i> Explore Services</a>
+          <a href="#about" class="btn-outline"><i class="fas fa-info-circle"></i> Learn More</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-slide">
+      <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=1600&q=80')"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-badge"><i class="fas fa-heart"></i> Compassionate Care</div>
+        <h1>Healing Starts with <span class="accent">Compassion & Trust</span></h1>
+        <p>Our dedicated team of specialists works around the clock, ensuring every patient receives personalized, dignified, and effective medical care.</p>
+        <div class="hero-btns">
+          <a href="#doctors" class="btn-primary"><i class="fas fa-user-md"></i> Meet Our Doctors</a>
+          <a href="#contact" class="btn-outline"><i class="fas fa-phone"></i> Contact Us</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-slide">
+      <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=1600&q=80')"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-badge"><i class="fas fa-ambulance"></i> 24/7 Emergency Services</div>
+        <h1>Always Here When <span class="accent">You Need Us Most</span></h1>
+        <p>Our emergency response team is available 24 hours a day, 7 days a week — because medical emergencies don't follow a schedule.</p>
+        <div class="hero-btns">
+          <a href="tel:+254712883849" class="btn-primary"><i class="fas fa-phone-alt"></i> Emergency: +254 712 883 849</a>
+          <a href="#location" class="btn-outline"><i class="fas fa-map-marker-alt"></i> Find Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-indicators" id="heroIndicators">
+    <div class="hero-dot active" onclick="goToSlide(0)"></div>
+    <div class="hero-dot" onclick="goToSlide(1)"></div>
+    <div class="hero-dot" onclick="goToSlide(2)"></div>
+    <div class="hero-dot" onclick="goToSlide(3)"></div>
+  </div>
+  <div class="hero-progress" id="heroProgress"></div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat-item"><div class="stat-num">15+</div><div class="stat-label">Years of Excellence</div></div>
+  <div class="stat-item"><div class="stat-num">120+</div><div class="stat-label">Specialist Doctors</div></div>
+  <div class="stat-item"><div class="stat-num">50k+</div><div class="stat-label">Patients Treated</div></div>
+  <div class="stat-item"><div class="stat-num">98%</div><div class="stat-label">Patient Satisfaction</div></div>
+</div>
+
+<!-- LIVE WAIT TIME BANNER (NEW) -->
+<div class="wait-banner">
+  <span class="wait-banner-label"><i class="fas fa-circle" style="color:#22c55e;font-size:0.5rem;vertical-align:middle"></i> Live Dept. Status</span>
+  <div class="wait-item">
+    <div class="wait-indicator green"></div>
+    <div><div class="dept">Emergency</div><div class="time">~8 min wait</div></div>
+  </div>
+  <div class="wait-item">
+    <div class="wait-indicator green"></div>
+    <div><div class="dept">OPD / General</div><div class="time">~15 min wait</div></div>
+  </div>
+  <div class="wait-item">
+    <div class="wait-indicator yellow"></div>
+    <div><div class="dept">Pharmacy</div><div class="time">~22 min wait</div></div>
+  </div>
+  <div class="wait-item">
+    <div class="wait-indicator green"></div>
+    <div><div class="dept">Lab / Diagnostics</div><div class="time">~12 min wait</div></div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header">
+    <div class="section-tag">What We Offer</div>
+    <h2 class="section-title">Comprehensive <span>Medical Services</span></h2>
+    <p class="section-sub">BRISK Hospital offers a full spectrum of healthcare services delivered by highly trained specialists using modern equipment.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon"><i class="fas fa-heartbeat"></i></div>
+      <h3>Cardiology</h3>
+      <p>Advanced cardiac care including echocardiography, stress tests, angioplasty, and heart surgeries by top cardiologists.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><i class="fas fa-brain"></i></div>
+      <h3>Neurology</h3>
+      <p>Expert diagnosis and treatment of stroke, epilepsy, Parkinson's disease, migraines, and neurological disorders.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><i class="fas fa-bone"></i></div>
+      <h3>Orthopaedics</h3>
+      <p>Comprehensive bone, joint, and muscle care including arthroscopy, joint replacement, and sports injury rehabilitation.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><i class="fas fa-baby"></i></div>
+      <h3>Maternity & NICU</h3>
+      <p>Safe, supportive maternal care from prenatal to postnatal, with a fully equipped Neonatal Intensive Care Unit.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><i class="fas fa-microscope"></i></div>
+      <h3>Laboratory & Diagnostics</h3>
+      <p>State-of-the-art lab services including MRI, CT scans, X-ray, ultrasound, and comprehensive blood panels.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><i class="fas fa-pills"></i></div>
+      <h3>Pharmacy</h3>
+      <p>24-hour in-house pharmacy with a wide range of medications, supplements, and patient counselling services.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><i class="fas fa-eye"></i></div>
+      <h3>Ophthalmology</h3>
+      <p>Complete eye care including cataract surgery, glaucoma treatment, laser vision correction, and optical services.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><i class="fas fa-ambulance"></i></div>
+      <h3>Emergency & Trauma</h3>
+      <p>24/7 emergency services with a dedicated trauma team, ambulance fleet, and rapid triage system.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-image-stack">
+      <div class="about-img-main"></div>
+      <div class="about-img-accent"></div>
+      <div class="about-badge-floating"><span class="big">15+</span>Years of<br>Excellence</div>
+    </div>
+    <div class="about-content">
+      <div class="section-tag">About BRISK Hospital</div>
+      <h2 class="section-title">Delivering <span>World-Class</span> Healthcare in Kiambu</h2>
+      <p class="section-sub">Founded with a mission to transform healthcare in the region, BRISK Hospital has grown into a leading medical institution in Kiambu County. We combine expert medical knowledge with warm human care — because every patient deserves both.</p>
+      <div class="skill-bars">
+        <div class="skill-bar">
+          <div class="skill-bar-header"><span class="skill-bar-label"><i class="fas fa-user-md" style="color:var(--blue);margin-right:6px"></i>Patient Recovery Rate</span><span class="skill-bar-pct">97%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-width="97"></div></div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-bar-header"><span class="skill-bar-label"><i class="fas fa-heart" style="color:var(--blue);margin-right:6px"></i>Patient Satisfaction</span><span class="skill-bar-pct">98%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-width="98"></div></div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-bar-header"><span class="skill-bar-label"><i class="fas fa-microscope" style="color:var(--blue);margin-right:6px"></i>Diagnostic Accuracy</span><span class="skill-bar-pct">95%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-width="95"></div></div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-bar-header"><span class="skill-bar-label"><i class="fas fa-clock" style="color:var(--blue);margin-right:6px"></i>Emergency Response Time</span><span class="skill-bar-pct">92%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-width="92"></div></div>
+        </div>
+      </div>
+      <div class="about-features">
+        <div class="about-feat"><i class="fas fa-check-circle"></i><span>ISO Certified Facility</span></div>
+        <div class="about-feat"><i class="fas fa-check-circle"></i><span>24/7 Emergency Care</span></div>
+        <div class="about-feat"><i class="fas fa-check-circle"></i><span>120+ Specialists</span></div>
+        <div class="about-feat"><i class="fas fa-check-circle"></i><span>Modern Equipment</span></div>
+        <div class="about-feat"><i class="fas fa-check-circle"></i><span>Insurance Accepted</span></div>
+        <div class="about-feat"><i class="fas fa-check-circle"></i><span>Affordable Packages</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY / MEDIA -->
+<section class="gallery" id="gallery">
+  <div class="gallery-header">
+    <div class="section-tag">Media & Updates</div>
+    <h2 class="section-title">Latest <span>News & Videos</span></h2>
+    <p class="section-sub">Stay updated with the latest from BRISK Hospital — health tips, success stories, events, and medical breakthroughs.</p>
+  </div>
+  <div class="gallery-track-wrap">
+    <div class="gallery-track" id="galleryTrack"></div>
+  </div>
+</section>
+
+<!-- DOCTORS -->
+<section class="doctors" id="doctors">
+  <div class="doctors-header">
+    <div class="section-tag">Our Team</div>
+    <h2 class="section-title">Meet Our <span>Specialist Doctors</span></h2>
+    <p class="section-sub" style="margin:12px auto 0;text-align:center">Our diverse team of board-certified specialists brings decades of experience and a passion for patient-centred care.</p>
+  </div>
+  <div class="doctors-grid">
+    <div class="doctor-card">
+      <div class="doctor-img" style="background-image:url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&q=80')"><div class="doctor-dept">Cardiology</div></div>
+      <div class="doctor-info">
+        <h3>Dr. Amina Ochieng</h3>
+        <p>Chief Cardiologist – 18 years exp.</p>
+        <div class="doctor-socials"><a href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="mailto:techray91@gmail.com"><i class="fas fa-envelope"></i></a></div>
+      </div>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-img" style="background-image:url('https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&q=80')"><div class="doctor-dept">Neurology</div></div>
+      <div class="doctor-info">
+        <h3>Dr. James Mwangi</h3>
+        <p>Senior Neurologist – 14 years exp.</p>
+        <div class="doctor-socials"><a href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="mailto:techray91@gmail.com"><i class="fas fa-envelope"></i></a></div>
+      </div>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-img" style="background-image:url('https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&q=80')"><div class="doctor-dept">Paediatrics</div></div>
+      <div class="doctor-info">
+        <h3>Dr. Grace Kamau</h3>
+        <p>Paediatric Specialist – 12 years exp.</p>
+        <div class="doctor-socials"><a href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="mailto:techray91@gmail.com"><i class="fas fa-envelope"></i></a></div>
+      </div>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-img" style="background-image:url('https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&q=80')"><div class="doctor-dept">Surgery</div></div>
+      <div class="doctor-info">
+        <h3>Dr. Brian Njoroge</h3>
+        <p>General & Laparoscopic Surgeon – 16 yrs.</p>
+        <div class="doctor-socials"><a href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="mailto:techray91@gmail.com"><i class="fas fa-envelope"></i></a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HEALTH TIPS (NEW SECTION) -->
+<section class="health-tips" id="health-tips">
+  <div class="health-tips-header">
+    <div class="section-tag">Wellness</div>
+    <h2 class="section-title">Health <span>Tips & Articles</span></h2>
+    <p class="section-sub">Expert advice and wellness guides from our medical team to help you live healthier every day.</p>
+  </div>
+  <div class="tips-grid">
+    <div class="tip-card">
+      <div class="tip-card-img" style="background-image:url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=600&q=80')">
+        <span class="tip-category">Heart Health</span>
+      </div>
+      <div class="tip-card-body">
+        <h4>5 Daily Habits for a Healthy Heart</h4>
+        <p>Simple lifestyle changes — from morning walks to reducing salt — that dramatically lower your risk of heart disease.</p>
+        <a href="#contact" class="tip-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-card-img" style="background-image:url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&q=80')">
+        <span class="tip-category">Nutrition</span>
+      </div>
+      <div class="tip-card-body">
+        <h4>Eating Right for Better Immunity</h4>
+        <p>Discover the foods that strengthen your immune system and the Kenyan staples that are quietly powerful superfoods.</p>
+        <a href="#contact" class="tip-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-card-img" style="background-image:url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80')">
+        <span class="tip-category">Mental Health</span>
+      </div>
+      <div class="tip-card-body">
+        <h4>Managing Stress in a Busy World</h4>
+        <p>Our psychologist shares proven techniques to reduce anxiety, improve sleep, and protect your long-term mental wellbeing.</p>
+        <a href="#contact" class="tip-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="why">
+  <div class="why-inner">
+    <div class="why-img">
+      <div class="why-label"><span class="big">50k+</span><small>Patients Successfully Treated</small></div>
+    </div>
+    <div>
+      <div class="section-tag">Why BRISK?</div>
+      <h2 class="section-title">The BRISK <span>Difference</span></h2>
+      <p class="section-sub">We set ourselves apart through relentless commitment to quality, innovation, and patient dignity.</p>
+      <div class="why-features">
+        <div class="why-feat">
+          <div class="why-feat-icon"><i class="fas fa-shield-alt"></i></div>
+          <div><h4>Accredited & Certified</h4><p>Fully accredited by the Kenya Medical Practitioners and Dentists Council with ISO certifications.</p></div>
+        </div>
+        <div class="why-feat">
+          <div class="why-feat-icon"><i class="fas fa-robot"></i></div>
+          <div><h4>Advanced Technology</h4><p>Equipped with the latest MRI, CT, robotic surgical systems, and digital health records.</p></div>
+        </div>
+        <div class="why-feat">
+          <div class="why-feat-icon"><i class="fas fa-hand-holding-heart"></i></div>
+          <div><h4>Patient-First Philosophy</h4><p>Every decision we make puts the patient's wellbeing, comfort, and dignity first.</p></div>
+        </div>
+        <div class="why-feat">
+          <div class="why-feat-icon"><i class="fas fa-wallet"></i></div>
+          <div><h4>Affordable & Insured Care</h4><p>We accept all major insurance schemes and offer flexible payment plans for all patients.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSURANCE (NEW SECTION) -->
+<section class="insurance-section" id="insurance">
+  <div class="insurance-inner">
+    <div class="section-tag" style="justify-content:center">Coverage</div>
+    <h2 class="section-title">Insurance & <span>Payment Plans</span></h2>
+    <p class="section-sub">We accept all major insurance providers and NHIF, making quality healthcare accessible to everyone.</p>
+    <div class="insurance-logos">
+      <div class="insurance-badge"><i class="fas fa-check-circle"></i> NHIF</div>
+      <div class="insurance-badge"><i class="fas fa-check-circle"></i> Jubilee Insurance</div>
+      <div class="insurance-badge"><i class="fas fa-check-circle"></i> AAR Healthcare</div>
+      <div class="insurance-badge"><i class="fas fa-check-circle"></i> CIC Insurance</div>
+      <div class="insurance-badge"><i class="fas fa-check-circle"></i> Britam Health</div>
+      <div class="insurance-badge"><i class="fas fa-check-circle"></i> Madison Insurance</div>
+      <div class="insurance-badge"><i class="fas fa-check-circle"></i> UAP Old Mutual</div>
+      <div class="insurance-badge"><i class="fas fa-check-circle"></i> Resolution Health</div>
+      <div class="insurance-badge"><i class="fas fa-check-circle"></i> Minet Kenya</div>
+      <div class="insurance-badge"><i class="fas fa-check-circle"></i> AMREF Health Africa</div>
+    </div>
+    <div class="insurance-note">
+      <strong>Don't have insurance?</strong> No problem. We offer flexible <strong>M-Pesa payment plans</strong>, cash, and interest-free installments for eligible patients. Our billing team is happy to help — just ask at the front desk or <a href="tel:+254712883849" style="color:var(--blue);font-weight:600">call us</a>.
+    </div>
+  </div>
+</section>
+
+<!-- APPOINTMENT & CONTACT -->
+<section class="appointment" id="contact">
+  <div class="appt-inner">
+    <div class="appt-content">
+      <div class="section-tag" style="color:#93c5fd">Contact Us</div>
+      <h2>Book an Appointment <br>or Reach Us Today</h2>
+      <p>Whether it's a routine check-up or an urgent consultation, our team is ready to help. Reach out through any of the channels below.</p>
+      <div class="appt-contacts">
+        <a href="tel:+254712883849" class="appt-contact">
+          <i class="fas fa-phone-alt"></i>
+          <div class="appt-contact-info"><div class="label">Call / WhatsApp</div><div class="value">+254 712 883 849</div></div>
+        </a>
+        <a href="https://wa.me/254712883849" class="appt-contact" target="_blank">
+          <i class="fab fa-whatsapp"></i>
+          <div class="appt-contact-info"><div class="label">WhatsApp Chat</div><div class="value">+254 712 883 849</div></div>
+        </a>
+        <a href="mailto:techray91@gmail.com" class="appt-contact">
+          <i class="fas fa-envelope"></i>
+          <div class="appt-contact-info"><div class="label">Email Us</div><div class="value">techray91@gmail.com</div></div>
+        </a>
+        <div class="appt-contact">
+          <i class="fas fa-map-marker-alt"></i>
+          <div class="appt-contact-info"><div class="label">Location</div><div class="value">Ndumberi Road, Kiambu, Kenya</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="appt-form">
+      <h3>Book an Appointment</h3>
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" placeholder="John"></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Doe"></div>
+      </div>
+      <div class="form-group"><label>Phone / WhatsApp</label><input type="tel" placeholder="+254 7XX XXX XXX"></div>
+      <div class="form-group"><label>Email Address</label><input type="email" placeholder="you@email.com"></div>
+      <div class="form-group">
+        <label>Department</label>
+        <select>
+          <option>Select Department</option>
+          <option>Cardiology</option>
+          <option>Neurology</option>
+          <option>Orthopaedics</option>
+          <option>Maternity</option>
+          <option>Paediatrics</option>
+          <option>General Medicine</option>
+          <option>Emergency</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Preferred Date</label><input type="date"></div>
+      <div class="form-group"><label>Message (Optional)</label><textarea rows="2" placeholder="Briefly describe your concern..."></textarea></div>
+      <button class="form-submit" onclick="alert('Thank you! We will contact you shortly to confirm your appointment. 📞 +254 712 883 849')">
+        <i class="fas fa-calendar-check"></i> Confirm Appointment
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testimonials-header">
+    <div class="section-tag">Patient Stories</div>
+    <h2 class="section-title">What Our <span>Patients Say</span></h2>
+    <p class="section-sub" style="margin:12px auto 0;text-align:center">Real experiences from the patients and families we've had the privilege to serve.</p>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="quote-icon">"</div>
+      <div class="stars">★★★★★</div>
+      <p>BRISK Hospital saved my mother's life. The cardiac team was incredible — fast, professional, and deeply compassionate. We are forever grateful.</p>
+      <div class="t-author">
+        <div class="t-avatar" style="background-image:url('https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&q=80')"></div>
+        <div><div class="t-name">Sarah Wanjiku</div><div class="t-role">Thika, Kenya</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="quote-icon">"</div>
+      <div class="stars">★★★★★</div>
+      <p>The maternity ward at BRISK is exceptional. The nurses and midwives made my delivery a beautiful, safe experience. I highly recommend this hospital.</p>
+      <div class="t-author">
+        <div class="t-avatar" style="background-image:url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80')"></div>
+        <div><div class="t-name">Martha Njeri</div><div class="t-role">Kiambu, Kenya</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="quote-icon">"</div>
+      <div class="stars">★★★★★</div>
+      <p>From registration to discharge, everything was smooth and efficient. The doctors explained my condition clearly and treatment was effective within days.</p>
+      <div class="t-author">
+        <div class="t-avatar" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80')"></div>
+        <div><div class="t-name">Peter Kamau</div><div class="t-role">Nairobi, Kenya</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION MAP -->
+<section class="location-section" id="location">
+  <div style="text-align:center;margin-bottom:48px">
+    <div class="section-tag">Find Us</div>
+    <h2 class="section-title">Our <span>Location</span></h2>
+    <p class="section-sub" style="margin:12px auto 0">Conveniently located in Kiambu along Ndumberi Road — easily accessible from Nairobi and surrounding areas.</p>
+  </div>
+  <div class="location-inner">
+    <div class="location-info">
+      <div class="loc-detail">
+        <div class="loc-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <div class="loc-text"><div class="l-label">Address</div><div class="l-val">Ndumberi Road, Kiambu County, Kenya</div></div>
+      </div>
+      <div class="loc-detail">
+        <div class="loc-icon"><i class="fas fa-phone"></i></div>
+        <div class="loc-text"><div class="l-label">Phone / WhatsApp</div><div class="l-val"><a href="tel:+254712883849" style="color:inherit;text-decoration:none">+254 712 883 849</a></div></div>
+      </div>
+      <div class="loc-detail">
+        <div class="loc-icon"><i class="fas fa-envelope"></i></div>
+        <div class="loc-text"><div class="l-label">Email</div><div class="l-val"><a href="mailto:techray91@gmail.com" style="color:inherit;text-decoration:none">techray91@gmail.com</a></div></div>
+      </div>
+      <div class="loc-detail">
+        <div class="loc-icon"><i class="fas fa-clock"></i></div>
+        <div class="loc-text"><div class="l-label">Working Hours</div><div class="l-val">Mon – Sun: 24 Hours (Emergency Always Open)</div></div>
+      </div>
+      <div class="loc-detail">
+        <div class="loc-icon"><i class="fas fa-car"></i></div>
+        <div class="loc-text"><div class="l-label">Getting Here</div><div class="l-val">Along Ndumberi Road, Kiambu – 5 min from Kiambu town centre</div></div>
+      </div>
+    </div>
+    <div class="map-container">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.29!2d36.83!3d-1.17!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f3c5c1f0e0001%3A0x1234!2sNdumberi+Road%2C+Kiambu!5e0!3m2!1sen!2ske!4v1690000000000!5m2!1sen!2ske" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <div class="f-logo">
+        <div class="f-logo-icon">B</div>
+        <div class="f-logo-text">BRISK <span>Hospital</span></div>
+      </div>
+      <p>Delivering world-class, compassionate healthcare to the people of Kiambu and beyond. Your health is our greatest commitment.</p>
+      <div class="footer-socials">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://wa.me/254712883849" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="mailto:techray91@gmail.com"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#doctors">Our Doctors</a></li>
+        <li><a href="#health-tips">Health Tips</a></li>
+        <li><a href="#contact">Appointment</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Departments</h4>
+      <ul>
+        <li><a href="#">Cardiology</a></li>
+        <li><a href="#">Neurology</a></li>
+        <li><a href="#">Orthopaedics</a></li>
+        <li><a href="#">Maternity & NICU</a></li>
+        <li><a href="#">Paediatrics</a></li>
+        <li><a href="#">Emergency</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <div class="footer-contact-item"><i class="fas fa-map-marker-alt"></i><span>Ndumberi Road, Kiambu County, Kenya</span></div>
+      <div class="footer-contact-item"><i class="fas fa-phone"></i><span><a href="tel:+254712883849">+254 712 883 849</a></span></div>
+      <div class="footer-contact-item"><i class="fab fa-whatsapp"></i><span><a href="https://wa.me/254712883849" target="_blank">WhatsApp: +254 712 883 849</a></span></div>
+      <div class="footer-contact-item"><i class="fas fa-envelope"></i><span><a href="mailto:techray91@gmail.com">techray91@gmail.com</a></span></div>
+      <div class="footer-contact-item"><i class="fas fa-clock"></i><span>Open 24/7 – Emergency Always</span></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 BRISK Hospital. All Rights Reserved. Ndumberi Road, Kiambu, Kenya.</span>
+    <span>Built with ❤️ for better healthcare</span>
+  </div>
+</footer>
+
+<!-- Emergency Badge -->
+<a href="tel:+254712883849" class="emergency-badge">
+  <i class="fas fa-phone-alt"></i> Emergency: +254 712 883 849
+</a>
+
+<!-- WhatsApp Float (NEW) -->
+<a href="https://wa.me/254712883849" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- Scroll Top -->
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <i class="fas fa-chevron-up"></i>
+</button>
+
+<script>
+// ===== HERO SLIDER =====
+let currentSlide = 0;
+const slides = document.querySelectorAll('.hero-slide');
+const dots = document.querySelectorAll('.hero-dot');
+let slideTimer;
+
+function goToSlide(n) {
+  slides[currentSlide].classList.remove('active');
+  dots[currentSlide].classList.remove('active');
+  currentSlide = (n + slides.length) % slides.length;
+  slides[currentSlide].classList.add('active');
+  dots[currentSlide].classList.add('active');
+  resetProgress();
+}
+function nextSlide() { goToSlide(currentSlide + 1); }
+function resetProgress() {
+  const p = document.getElementById('heroProgress');
+  p.style.animation = 'none'; void p.offsetWidth;
+  p.style.animation = 'progress 9s linear infinite';
+}
+function startAutoSlide() { clearInterval(slideTimer); slideTimer = setInterval(nextSlide, 9000); }
+startAutoSlide();
+
+// ===== NAVBAR SCROLL =====
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+  document.getElementById('scrollTop').classList.toggle('show', window.scrollY > 300);
+});
+
+// ===== BURGER MENU =====
+const burgerBtn = document.getElementById('burgerBtn');
+const mobileNav = document.getElementById('mobileNav');
+const mobileOverlay = document.getElementById('mobileOverlay');
+const mobileNavClose = document.getElementById('mobileNavClose');
+const mobileLinks = document.querySelectorAll('.mobile-link');
+
+function openMenu() {
+  burgerBtn.classList.add('open');
+  burgerBtn.setAttribute('aria-expanded', 'true');
+  mobileNav.classList.add('open');
+  mobileNav.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenu() {
+  burgerBtn.classList.remove('open');
+  burgerBtn.setAttribute('aria-expanded', 'false');
+  mobileNav.classList.remove('open');
+  mobileNav.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+burgerBtn.addEventListener('click', () => {
+  mobileNav.classList.contains('open') ? closeMenu() : openMenu();
+});
+mobileNavClose.addEventListener('click', closeMenu);
+mobileOverlay.addEventListener('click', closeMenu);
+mobileLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+// Close on Escape key
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+// ===== SKILL BARS ANIMATION =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+        bar.style.width = bar.dataset.width + '%';
+      });
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.skill-bars').forEach(el => observer.observe(el));
+
+// ===== GALLERY SLIDER =====
+const galleryData = [
+  { img: 'https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=600&q=80', tag: 'Video', title: 'Modern ICU & Critical Care', desc: 'A look inside our intensive care unit.' },
+  { img: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&q=80', tag: 'Event', title: 'Free Community Health Camp', desc: 'Reaching over 500 people in Kiambu.' },
+  { img: 'https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=600&q=80', tag: 'Video', title: 'Robotic Surgery Introduction', desc: 'Our chief surgeon explains the new system.' },
+  { img: 'https://images.unsplash.com/photo-1579684453423-f84349ef60b0?w=600&q=80', tag: 'News', title: 'BRISK Wins Healthcare Excellence Award', desc: 'Recognised for best patient outcomes 2024.' },
+  { img: 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=600&q=80', tag: 'Video', title: 'Maternal Health Awareness Month', desc: 'Empowering mothers with knowledge and care.' },
+  { img: 'https://images.unsplash.com/photo-1504813184591-01572f98c85f?w=600&q=80', tag: 'Event', title: 'Blood Donation Drive 2024', desc: 'Hundreds donate to save lives in Kiambu.' },
+  { img: 'https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?w=600&q=80', tag: 'Video', title: 'Paediatric Ward Tour', desc: 'See how we care for our youngest patients.' },
+  { img: 'https://images.unsplash.com/photo-1576671081837-49000212a370?w=600&q=80', tag: 'News', title: 'New MRI Machine Installed', desc: '3T MRI delivers unprecedented precision.' },
+];
+const track = document.getElementById('galleryTrack');
+[...galleryData, ...galleryData].forEach(item => {
+  const card = document.createElement('div');
+  card.className = 'gallery-card';
+  card.innerHTML = `<div class="gallery-img" style="background-image:url('${item.img}')"><div class="gallery-play"><i class="fas fa-play"></i></div></div><div class="gallery-info"><div class="gallery-tag">${item.tag}</div><h4>${item.title}</h4><p>${item.desc}</p></div>`;
+  track.appendChild(card);
+});
+
+// ===== LIVE WAIT TIME REFRESH (simulated) =====
+function randomizeWaits() {
+  const times = [
+    [5,10], [10,20], [18,28], [8,16]
+  ];
+  document.querySelectorAll('.wait-item .time').forEach((el, i) => {
+    const [min, max] = times[i];
+    const val = Math.floor(Math.random() * (max - min + 1)) + min;
+    el.textContent = `~${val} min wait`;
+    const dot = el.closest('.wait-item').querySelector('.wait-indicator');
+    dot.className = 'wait-indicator ' + (val < 15 ? 'green' : 'yellow');
+  });
+}
+setInterval(randomizeWaits, 45000); // refresh every 45s
+</script>
+</body>
+</html>
